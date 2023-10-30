@@ -6,6 +6,9 @@ import Notification from "../components/Notification";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AuthProvider from "../components/AuthProvider";
+import QueryProvider from "../components/QueryProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,12 +26,19 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <div>
-            <Notification />
-            <Navbar />
-            {children}
-            <Footer />
-          </div>
+          <QueryProvider>
+            <div>
+              <Notification />
+              <Navbar />
+              {children}
+              <Footer />
+              <ToastContainer
+                position="bottom-right"
+                theme="dark"
+                autoClose={3000}
+              />
+            </div>
+          </QueryProvider>
         </AuthProvider>
       </body>
     </html>

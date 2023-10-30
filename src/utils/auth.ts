@@ -5,6 +5,19 @@ import FacebookProvider from "next-auth/providers/facebook";
 
 import { prisma } from "./connect";
 
+declare module "next-auth" {
+  interface Session {
+    user: User & {
+      isAdmin: Boolean;
+    };
+  }
+}
+declare module "next-auth/jwt" {
+  interface JWT {
+    isAdmin: Boolean;
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
@@ -22,6 +35,23 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
     }),
   ],
+  callbacks: {
+    async session({ token, session }) {
+      if (token) {
+        session.user.isAdmin = token.isAdmin;
+      }
+      return session;
+    },
+    async jwt({ token }) {
+      const userInDb = await prisma.user.findUnique({
+        where: {
+          email: token.email!,
+        },
+      });
+      token.isAdmin = userInDb?.isAdmin!;
+      return token;
+    },
+  },
 };
 
 export const getAuthSession = () => getServerSession(authOptions);
