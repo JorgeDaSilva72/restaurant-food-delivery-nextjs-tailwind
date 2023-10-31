@@ -5,16 +5,19 @@ import { ProductType } from "../types/types";
 
 const Price = ({ product }: { product: ProductType }) => {
   const [total, setTotal] = useState(product.price);
-  console.log(total);
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
     if (product.options?.length) {
-      setTotal(
+      let finaltotal = (
         quantity *
-          (Number(product.price) + product.options[selected].additionalPrice)
-      );
+        (Number(product.price) + product.options[selected].additionalPrice)
+      ).toFixed(2);
+      setTotal(Number(finaltotal));
+    } else {
+      let finaltotal = (quantity * Number(product.price)).toFixed(2);
+      setTotal(Number(finaltotal));
     }
   }, [quantity, selected, product]);
 
@@ -34,7 +37,7 @@ const Price = ({ product }: { product: ProductType }) => {
               }}
               onClick={() => setSelected(index)}
             >
-              {option.title}
+              {option?.title}
             </button>
           ))}
       </div>
