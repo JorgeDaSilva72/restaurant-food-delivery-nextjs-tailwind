@@ -34,7 +34,7 @@ const Price = ({ product }: { product: ProductType }) => {
       id: product.id,
       title: product.title,
       img: product.img,
-      price: total,
+      price: Number(total.toFixed(2)),
       ...(product.options?.length && {
         optionTitle: product.options[selected].title,
       }),
