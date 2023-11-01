@@ -48,20 +48,21 @@ const Price = ({ product }: { product: ProductType }) => {
       <h2 className="text-2xl font-bold">${total}</h2>
       {/* OPTIONS CONTAINER */}
       <div className="flex gap-4">
-        {product.options?.length &&
-          product.options?.map((option, index) => (
-            <button
-              key={option.title}
-              className="min-w-[6rem] p-2 ring-1 ring-red-400 rounded-md"
-              style={{
-                background: selected === index ? "rgb(248 113 113)" : "white",
-                color: selected === index ? "white" : "red",
-              }}
-              onClick={() => setSelected(index)}
-            >
-              {option?.title}
-            </button>
-          ))}
+        {product.options?.length
+          ? product.options?.map((option, index) => (
+              <button
+                key={option.title}
+                className="min-w-[6rem] p-2 ring-1 ring-red-400 rounded-md"
+                style={{
+                  background: selected === index ? "rgb(248 113 113)" : "white",
+                  color: selected === index ? "white" : "red",
+                }}
+                onClick={() => setSelected(index)}
+              >
+                {option?.title}
+              </button>
+            ))
+          : null}
       </div>
       {/* QUANTITY AND ADD BUTTON CONTAINER */}
       <div className="flex justify-between items-center">
